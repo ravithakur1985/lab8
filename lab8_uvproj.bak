@@ -144,7 +144,7 @@
             <UsePdscDebugDescription>0</UsePdscDebugDescription>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>11</TargetSelection>
+          <TargetSelection>1</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -158,7 +158,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>STLink\ST-LINKIII-KEIL_SWO.dll</Driver>
+            <Driver>BIN\UL2CM3.DLL</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -171,8 +171,8 @@
             <DriverSelection>4103</DriverSelection>
           </Flash1>
           <bUseTDR>0</bUseTDR>
-          <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -414,6 +414,56 @@
               <FileName>system_stm32f30x.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\STM32F\src\system_stm32f30x.c</FilePath>
+            </File>
+            <File>
+              <FileName>cli.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\cli.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_Button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_Button.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_Exec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_Exec.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_Flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_Flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_GeneralTimer2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_GeneralTimer2.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_LEDS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_LEDS.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_Tools.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_Tools.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_UART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_UART.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f3_Watchdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stm32f3_Watchdog.c</FilePath>
             </File>
           </Files>
         </Group>

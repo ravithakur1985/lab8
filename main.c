@@ -13,6 +13,7 @@
 #include "stm32f3_UART.h"
 #include "cli.h"
 #include "stm32f3_Watchdog.h"
+#include "stm32f3_DMA.h"
 #include "stdio.h"
 
 
@@ -24,6 +25,7 @@ int main (void){
 	Button_Init();
 	TIM2_Init();
 	UART_Init();
+	DMA_Init();
 	CLI_Init();
 	
 	if (Watchdog_POR()){

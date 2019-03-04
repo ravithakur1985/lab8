@@ -25,6 +25,7 @@ INCLUDES
 #include "cli.h"
 #include "stm32f3_Flash.h"
 #include "stm32f3_Watchdog.h"
+#include "stm32f3_DMA.h"
 
 /*******************************************************************************
 
@@ -52,6 +53,8 @@ static void     cli_set_memory(const uint8_t * cli_string);
 static void     cli_get_memory(const uint8_t * cli_string);
 static void     cli_erase_flash(const uint8_t * cli_string);
 static void     cli_watchdog_trigger(const uint8_t * cli_string);
+static void     cli_memset(const uint8_t * cli_string);
+static void     cli_memcopy(const uint8_t * cli_string);
 static uint8_t  cli_list_init(uint8_t index, const uint8_t * string, uint8_t size, const uint8_t * help, CLICMDFuncPtr fptr);
 
 static uint8_t  is_dec_num(uint8_t src);
@@ -398,6 +401,106 @@ void cli_watchdog_trigger(const uint8_t * cli_string){
 	return;
 }
 
+/*******************************************************************************
+This function parses the input string for a 1 byte dma channel, 4 bytes 
+destination address, 4 bytes data to write and 2 bytes count of transfers
+
+\param[in] cli_string the string to parse for command information
+
+\retval None
+
+\warning There is NO checking on the pointer field.  
+
+******************************************************************************/
+void cli_memset(const uint8_t * cli_string){
+    uint8_t ch;
+    uint32_t dst;
+    uint32_t data;
+    uint16_t cnt;
+    DMA_Channel_TypeDef* dma
+
+    str_2_long(&cli_string[6], &ch);
+    str_2_long(&cli_string[7], &dst);
+    str_2_long(&cli_string[15], &data);
+    str_2_long(&cli_string[23], &cnt);
+    //check if ch is between 1 and 7,
+    //dst addr is in sram and cnt < 64K
+    if (((ch>0)&&(ch<7)) &&
+        ((SRAM_BASE < dst)&&(dst < (SRAM_BASE+0x9fff))) &&
+        (cnt <= 65535)){
+      switch(ch){
+        case 1: dma = DMA1_Channel1q
+                break;
+        case 2: dma = DMA1_Channel2;
+                break;
+        case 3: dma = DMA1_Channel3;
+                break;
+        case 4: dma = DMA1_Channel4;
+                break;
+        case 5: dma = DMA1_Channel5;
+                break;
+        case 6: dma = DMA1_Channel6;
+                break;
+        case 7: dma = DMA1_Channel7;
+                break;
+      }
+      DMA_MemSet(dma, dst, data, cnt);
+    }
+	
+
+	return;
+}
+
+/*******************************************************************************
+This function parses the input string for a 1 byte dma channel, 4 bytes 
+source address, 4 bytes destination address and 2 bytes count of transfers
+
+\param[in] cli_string the string to parse for command information
+
+\retval None
+
+\warning There is NO checking on the pointer field.  
+
+******************************************************************************/
+void cli_memcopy(const uint8_t * cli_string){
+    uint8_t ch;
+    uint32_t src;
+    uint32_t dst;
+    uint16_t cnt;
+    DMA_Channel_TypeDef* dma
+
+    str_2_long(&cli_string[6], &ch);
+    str_2_long(&cli_string[7], &src);
+    str_2_long(&cli_string[15], &dst);
+    str_2_long(&cli_string[23], &cnt);
+    //check if ch is between 1 and 7, src and
+    //dst addr is in sram and cnt < 64K
+    if (((ch>0)&&(ch<7)) &&
+        ((SRAM_BASE < src)&&(src < (SRAM_BASE+0x9fff))) &&
+        ((SRAM_BASE < dst)&&(dst < (SRAM_BASE+0x9fff))) &&
+        (cnt <= 65535)){
+      switch(ch){
+        case 1: dma = DMA1_Channel1q
+                break;
+        case 2: dma = DMA1_Channel2;
+                break;
+        case 3: dma = DMA1_Channel3;
+                break;
+        case 4: dma = DMA1_Channel4;
+                break;
+        case 5: dma = DMA1_Channel5;
+                break;
+        case 6: dma = DMA1_Channel6;
+                break;
+        case 7: dma = DMA1_Channel7;
+                break;
+      }
+      DMA_MemCopy(dma, src, dst, cnt);
+    }
+
+	return;
+}
+
 
 /*******************************************************************************
 This function parses the input string for a 32 bit pointer and prints the data
@@ -608,6 +711,8 @@ void CLI_Init(void){
 	cli_list_init(2,  "setmemory",      9, "Sets data to address: set memory <address> <data>", &cli_set_memory);
 	cli_list_init(3,  "eraseflash",    10, "Erases FLASH page : erase flash <page>", &cli_erase_flash);
 	cli_list_init(4,  "watchdog",       8, "Triggers watchdog reset : watchdog", &cli_watchdog_trigger);
+	cli_list_init(5,  "memset",         6, "Write set value to memory range specified by count: memset", &cli_memset);
+	cli_list_init(6,  "memcopy",        7, "Copies src data to dst specified by count : memset", &cli_memcopy);
 	cli_list_init(CLI_MAX_COMMANDS-1, ASCII_NULL,  0, ASCII_NULL, NULL);  //ALWAYS THE LAST ONE!
 
 	//
