@@ -17,21 +17,21 @@ void DMA_Init(void){
 	DMA1->IFCR |= 0x0fffffff;
 	return;
 }
-static uint8_t dma_ch(DMA_Channel_TypeDef* dma){
+static IRQn_Type dma_ch(DMA_Channel_TypeDef* dma){
 	 if (dma == DMA1_Channel1){
-		return 11;
+		return DMA1_Channel1_IRQn;
 	} else if (dma == DMA1_Channel2){
-		return 12;
+		return DMA1_Channel2_IRQn;
 	} else if (dma == DMA1_Channel3){
-		return 13;
+		return DMA1_Channel3_IRQn;
 	} else if (dma == DMA1_Channel4){
-		return 14;
+		return DMA1_Channel4_IRQn;
 	} else if (dma == DMA1_Channel5){
-		return 15;
+		return DMA1_Channel5_IRQn;
 	} else if (dma == DMA1_Channel6){
-		return 16;
-	} else if (dma == DMA1_Channel7){
-		return 17;
+		return DMA1_Channel6_IRQn;
+	} else {
+		return DMA1_Channel7_IRQn;
 	}
 }
 
@@ -46,15 +46,15 @@ void DMA_MemCopy(DMA_Channel_TypeDef* dma, uint32_t src,
 				      DMA_CCR_MINC | DMA_CCR_DIR | DMA_CCR_TCIE |
 				      DMA_CCR_TEIE;
 	//set the count
-  dma->CNDTR = count;
+    dma->CNDTR = count;
 	//set mem addr
 	dma->CMAR = src;
 	//set dst addr
 	dma->CPAR = dst;
 	//enable NVIC
-	NVIC_EnableIRQ(dma_ch(dma));								
+    NVIC_EnableIRQ(dma_ch(dma));	
 	//enable the channel
-	dma->CCR &= ~DMA_CCR_EN;
+	dma->CCR |= DMA_CCR_EN;
 	return;
 }
 								 
@@ -70,15 +70,15 @@ void DMA_MemSet(DMA_Channel_TypeDef* dma, uint32_t dst,
 				      DMA_CCR_MSIZE_1 | DMA_CCR_PINC |
 				      DMA_CCR_DIR | DMA_CCR_TCIE | DMA_CCR_TEIE;
 	//set the count
-  dma->CNDTR = count;
+    dma->CNDTR = count;
 	//set src addr	
 	dma->CMAR = (uint32_t)data_ptr;
 	//set dst addr
 	dma->CPAR = dst;
 	//enable NVIC
-	NVIC_EnableIRQ(dma_ch(dma));								
+	NVIC_EnableIRQ(dma_ch(dma));  
 	//enable the channel
-	dma->CCR &= ~DMA_CCR_EN;
+	dma->CCR |= DMA_CCR_EN;
 	return;
 }
 								 
@@ -88,6 +88,7 @@ void DMA1_Channel1_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF1;
 	}
+   	NVIC_ClearPendingIRQ(DMA1_Channel1_IRQn);
 	return;
 }
 
@@ -97,6 +98,7 @@ void DMA1_Channel2_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF2;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel2_IRQn);
 	return;
 }
 
@@ -106,6 +108,7 @@ void DMA1_Channel3_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF3;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel3_IRQn);
 	return;
 }
 
@@ -115,6 +118,7 @@ void DMA1_Channel4_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF4;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel4_IRQn);
 	return;
 }
 
@@ -124,6 +128,7 @@ void DMA1_Channel5_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF5;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel5_IRQn);
 	return;
 }
 
@@ -133,6 +138,7 @@ void DMA1_Channel6_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF6;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel6_IRQn);
 	return;
 }
 
@@ -142,6 +148,7 @@ void DMA1_Channel7_IRQHandler(void){
 		//clear the interrupt
 		DMA1->IFCR |= DMA_IFCR_CTCIF7;
 	}
+	NVIC_ClearPendingIRQ(DMA1_Channel7_IRQn);
 	return;
 }
 

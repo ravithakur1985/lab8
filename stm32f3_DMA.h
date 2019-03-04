@@ -24,6 +24,8 @@ void DMA1_Channel6_IRQHandler(void);
 void DMA1_Channel7_IRQHandler(void);
 
 //returns the IRQ value for the dma channel pointer passed
-static uint8_t dma_ch(DMA_Channel_TypeDef* dma);
+static IRQn_Type dma_ch(DMA_Channel_TypeDef* dma);
 
 #endif
+
+

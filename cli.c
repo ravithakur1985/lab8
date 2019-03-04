@@ -245,7 +245,7 @@ uint8_t str_2_long(const uint8_t * src, uint32_t * dst){
 
 /*******************************************************************************
 
-Converts an ASCII string to an unsigned long (32 bits).
+Converts an ASCII string to an unsigned short (16 bits).
 
 \param src The input string to convert to a long
 \param dst The 16 bit unsigned short value 
@@ -417,19 +417,19 @@ void cli_memset(const uint8_t * cli_string){
     uint32_t dst;
     uint32_t data;
     uint16_t cnt;
-    DMA_Channel_TypeDef* dma
+    DMA_Channel_TypeDef* dma;
 
-    str_2_long(&cli_string[6], &ch);
+    ch = atoi(cli_string[6]);
     str_2_long(&cli_string[7], &dst);
     str_2_long(&cli_string[15], &data);
-    str_2_long(&cli_string[23], &cnt);
+    str_2_short(&cli_string[23], &cnt);
     //check if ch is between 1 and 7,
     //dst addr is in sram and cnt < 64K
-    if (((ch>0)&&(ch<7)) &&
-        ((SRAM_BASE < dst)&&(dst < (SRAM_BASE+0x9fff))) &&
+    if (((ch>=1)&&(ch<=7)) &&
+        ((SRAM_BASE <= dst)&&(dst <= (SRAM_BASE+0x9fff))) &&
         (cnt <= 65535)){
       switch(ch){
-        case 1: dma = DMA1_Channel1q
+        case 1: dma = DMA1_Channel1;
                 break;
         case 2: dma = DMA1_Channel2;
                 break;
@@ -467,20 +467,20 @@ void cli_memcopy(const uint8_t * cli_string){
     uint32_t src;
     uint32_t dst;
     uint16_t cnt;
-    DMA_Channel_TypeDef* dma
+    DMA_Channel_TypeDef* dma;
 
-    str_2_long(&cli_string[6], &ch);
-    str_2_long(&cli_string[7], &src);
-    str_2_long(&cli_string[15], &dst);
-    str_2_long(&cli_string[23], &cnt);
+    ch = atoi(cli_string[7]);
+    str_2_long(&cli_string[8], &src);
+    str_2_long(&cli_string[16], &dst);
+    str_2_short(&cli_string[24], &cnt);
     //check if ch is between 1 and 7, src and
     //dst addr is in sram and cnt < 64K
-    if (((ch>0)&&(ch<7)) &&
-        ((SRAM_BASE < src)&&(src < (SRAM_BASE+0x9fff))) &&
-        ((SRAM_BASE < dst)&&(dst < (SRAM_BASE+0x9fff))) &&
+    if (((ch>=1)&&(ch<=7)) &&
+        ((SRAM_BASE <= src)&&(src <= (SRAM_BASE+0x9fff))) &&
+        ((SRAM_BASE <= dst)&&(dst <= (SRAM_BASE+0x9fff))) &&
         (cnt <= 65535)){
       switch(ch){
-        case 1: dma = DMA1_Channel1q
+        case 1: dma = DMA1_Channel1;
                 break;
         case 2: dma = DMA1_Channel2;
                 break;
